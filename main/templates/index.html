@@ -1,0 +1,175 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Bootstrap 적용 -->
+    <link rel="stylesheet" href="/static/bootstrap.css">
+    <!-- favicon.ico 404 Error Solution -->
+    <link rel="shortcut icon" href="#">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>메인 페이지</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">Navbar</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+      
+          <div class="collapse navbar-collapse" id="navbarColor01">
+            <ul class="navbar-nav me-auto">
+              <li class="nav-item">
+                <a class="nav-link active" href="#">Home
+                  <span class="visually-hidden">(current)</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Pricing</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="#">Action</a>
+                  <a class="dropdown-item" href="#">Another action</a>
+                  <a class="dropdown-item" href="#">Something else here</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="#">Separated link</a>
+                </div>
+              </li>
+            </ul>
+            <form class="d-flex">
+              <input class="form-control me-sm-2" type="text" placeholder="Search">
+              <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+            </form>
+          </div>
+        </div>
+      </nav>
+      <br>
+      <br>
+      <ul class="nav nav-tabs">
+        <!-- active tag -->
+        <li class="nav-item">
+          <a class="nav-link active" data-bs-toggle="tab" href="#upbit">Upbit</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-bs-toggle="tab" href="#bithumb">Bithumb</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-bs-toggle="tab" href="#coinone">Coinone</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-bs-toggle="tab" href="#korbit">Korbit</a>
+        </li>
+      </ul>
+      <br>
+      <br>
+      <div id="myTabContent" class="tab-content">
+        <!-- 두번째 div 부터 class를 tab-pane fade로 바꾸고 나서부터 탭이 정상적으로 먹힘 -->
+        <div class="tab-pane fade active show" id="upbit">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">코인 이름</th>
+                <th scope="col">실시간 시세(KRW)</th>
+                <th scope="col">실시간 시세(USD)</th>
+                <th scope="col">24시간 변동률</th>
+                <th scope="col">거래량</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="table-active">
+                <th scope="row">비트코인</th>
+                <td>{{btc_price}}</td>
+                <td>BTC content</td>
+                <td>BTC content</td>
+                <td>BTC content</td>
+              </tr>
+              <tr>
+                <th scope="row">이더리움</th>
+                <td>{{eth_price}}</td>
+                <td>BTC content</td>
+                <td>BTC content</td>
+                <td>BTC content</td>
+              </tr>
+              <tr class="table-active">
+                <th scope="row">라이트코인</th>
+                <td>{{ltc_price}}</td>
+                <td>BTC content</td>
+                <td>BTC content</td>
+                <td>BTC content</td>
+              </tr>
+              <tr>
+                <th scope="row">이더리움클래식</th>
+                <td>{{etc_price}}</td>
+                <td>BTC content</td>
+                <td>BTC content</td>
+                <td>BTC content</td>
+              </tr>
+              <tr class="table-active">
+                <th scope="row">리플</th>
+                <td>{{xrp_price}}</td>
+                <td>BTC content</td>
+                <td>BTC content</td>
+                <td>BTC content</td>
+              </tr>
+              <tr>
+                <th scope="row">비트코인캐시</th>
+                <td>{{bch_price}}</td>
+                <td>BTC content</td>
+                <td>BTC content</td>
+                <td>BTC content</td>
+              </tr>
+              <tr class="table-active">
+                <th scope="row">이오스</th>
+                <td>{{eos_price}}</td>
+                <td>BTC content</td>
+                <td>BTC content</td>
+                <td>BTC content</td>
+              </tr>
+              <tr>
+                <th scope="row">에이다</th>
+                <td>{{ada_price}}</td>
+                <td>BTC content</td>
+                <td>BTC content</td>
+                <td>BTC content</td>
+              </tr>
+              <tr class="table-active">
+                <th scope="row">퀀텀</th>
+                <td>{{qtum_price}}</td>
+                <td>BTC content</td>
+                <td>BTC content</td>
+                <td>BTC content</td>
+              </tr>
+              <tr>
+                <th scope="row">트론</th>
+                <td>{{trx_price}}</td>
+                <td>BTC content</td>
+                <td>BTC content</td>
+                <td>BTC content</td>
+              </tr>
+              <tr class="table-active">
+                <th scope="row">질리카</th>
+                <td>{{zil_price}}</td>
+                <td>BTC content</td>
+                <td>BTC content</td>
+                <td>BTC content</td>
+              </tr>
+              <tr>
+                <th scope="row">스텔라루멘</th>
+                <td>{{xlm_price}}</td>
+                <td>BTC content</td>
+                <td>BTC content</td>
+                <td>BTC content</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>  
+
+      <!-- Bootstrap JS --> <!-- 이거 안넣어서 Tab이 안먹혔었음 -->
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+  </body>
+</html>
