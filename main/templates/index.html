@@ -1,4 +1,8 @@
 {% load static %}
+{% load custom_tag %}
+{% load mathfilters %}
+<!-- Django 내장 템플릿 태그, 필터 -->
+<!--https://docs.djangoproject.com/en/3.1/ref/templates/builtins/#ref-templates-builtins-filters-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -70,101 +74,28 @@
       <div id="myTabContent" class="tab-content">
         <!-- 두번째 div 부터 class를 tab-pane fade로 바꾸고 나서부터 탭이 정상적으로 먹힘 -->
         <div class="tab-pane fade active show" id="upbit">
-          <table class="table">
+          <table class="table table-hover">
             <thead>
               <tr>
-                <th scope="col">코인 이름</th>
+                <th scope="col">코인</th>
                 <th scope="col">실시간 시세(KRW)</th>
-                <th scope="col">실시간 시세(USD)</th>
-                <th scope="col">24시간 변동률</th>
-                <th scope="col">거래량</th>
+                <th scope="col">전일 대비 변동률(%)</th>
+                <th scope="col">24시간 내 거래량(억)</th>
               </tr>
             </thead>
             <tbody>
-              <tr class="table-active">
-                <th scope="row">비트코인</th>
-                <td>{{btc_price}}</td>
-                <td>BTC content</td>
-                <td>BTC content</td>
-                <td>BTC content</td>
-              </tr>
+              <!-- 여기서 all_price는 dictionary, 이 방법 기억해두기-->
+              <!-- python for문과 다름, list가 반복이 안됨 -->
+              {% for upbit_key,upbit_value in upbit_price.items %}
               <tr>
-                <th scope="row">{{coin_name}}</th>
-                <td>{{eth_price}}</td>
-                <td>BTC content</td>
-                <td>BTC content</td>
-                <td>BTC content</td>
+                <!-- key를 통해 Dict 접근 getvalue 딕셔너리이름 키이름 -->
+                <!-- Django 내장 filter cut -->
+                <th scope="row">{% getvalue name_dict upbit_key %} ({{upbit_key|cut:"KRW-"}})</th>
+                <td>{{upbit_value}}</td>
+                <td>{% getvalue changed_rate upbit_key %}</td>
+                <td>{% getvalue trade_volume upbit_key %}</td>
               </tr>
-              <tr class="table-active">
-                <th scope="row">라이트코인</th>
-                <td>{{ltc_price}}</td>
-                <td>BTC content</td>
-                <td>BTC content</td>
-                <td>BTC content</td>
-              </tr>
-              <tr>
-                <th scope="row">이더리움클래식</th>
-                <td>{{etc_price}}</td>
-                <td>BTC content</td>
-                <td>BTC content</td>
-                <td>BTC content</td>
-              </tr>
-              <tr class="table-active">
-                <th scope="row">리플</th>
-                <td>{{xrp_price}}</td>
-                <td>BTC content</td>
-                <td>BTC content</td>
-                <td>BTC content</td>
-              </tr>
-              <tr>
-                <th scope="row">비트코인캐시</th>
-                <td>{{bch_price}}</td>
-                <td>BTC content</td>
-                <td>BTC content</td>
-                <td>BTC content</td>
-              </tr>
-              <tr class="table-active">
-                <th scope="row">이오스</th>
-                <td>{{eos_price}}</td>
-                <td>BTC content</td>
-                <td>BTC content</td>
-                <td>BTC content</td>
-              </tr>
-              <tr>
-                <th scope="row">에이다</th>
-                <td>{{ada_price}}</td>
-                <td>BTC content</td>
-                <td>BTC content</td>
-                <td>BTC content</td>
-              </tr>
-              <tr class="table-active">
-                <th scope="row">퀀텀</th>
-                <td>{{qtum_price}}</td>
-                <td>BTC content</td>
-                <td>BTC content</td>
-                <td>BTC content</td>
-              </tr>
-              <tr>
-                <th scope="row">트론</th>
-                <td>{{trx_price}}</td>
-                <td>BTC content</td>
-                <td>BTC content</td>
-                <td>BTC content</td>
-              </tr>
-              <tr class="table-active">
-                <th scope="row">질리카</th>
-                <td>{{zil_price}}</td>
-                <td>BTC content</td>
-                <td>BTC content</td>
-                <td>BTC content</td>
-              </tr>
-              <tr>
-                <th scope="row">스텔라루멘</th>
-                <td>{{xlm_price}}</td>
-                <td>BTC content</td>
-                <td>BTC content</td>
-                <td>BTC content</td>
-              </tr>
+              {% endfor %}
             </tbody>
           </table>
         </div>  

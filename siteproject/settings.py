@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'main',
     'requests',
+    'mathfilters', # 템플릿 태그 사칙연산 filter
 ]
 
 

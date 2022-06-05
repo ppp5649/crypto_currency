@@ -1,4 +1,5 @@
-# Python 공부
+# Python 공부내용 페이지
+
 # Python 자료구조 종류 List, Tuple, Set, Dictionary
 
 # 리스트 수정 / 문자열 인덱싱

@@ -1,4 +1,6 @@
-# # 실시간 원화거래 코인 시세 불러오기 (websocket)
+# views에 넣기 전 테스트 페이지
+
+# 실시간 원화거래 코인 시세 불러오기 (websocket)
 # import websockets
 # import asyncio
 # import json
@@ -57,26 +59,22 @@
         
 # print(krw_tickers)
 
-# ticker와 코인 이름 dictionary로 가져오기
+# ticker와 코인 이름 dictionary로 가져오기    
+# url = "https://api.upbit.com/v1/market/all"
+# response = requests.get(url)
+# response_json = response.json()
 
-import requests
-import json
+# name_dict = {}
 
-url = "https://api.upbit.com/v1/market/all"
-response = requests.get(url)
-response_json = response.json()
+# for coin in response_json:
+#     ticker = coin['market']
+#     kr_name = coin['korean_name']
 
-name_dict = {}
+#     if ticker.startswith("KRW"):
+#         name_dict.update({ticker : kr_name})
 
-for coin in response_json:
-    ticker = coin['market']
-    kr_name = coin['korean_name']
-
-    if ticker.startswith("KRW"):
-        name_dict.update({ticker : kr_name})
-
-krw_tikcers = name_dict.keys()
-str_tickers = ','.join(krw_tikcers)
+# krw_tikcers = name_dict.keys()
+# str_tickers = ','.join(krw_tikcers)
 
 # 원화거래 코인 시세 가져오기 (실시간 X)
 # import requests
@@ -161,3 +159,13 @@ str_tickers = ','.join(krw_tikcers)
 # coin_name = coin_name("https://api.upbit.com/v1/market/all")
 # print(coin_name)
 # print(coin_name['KRW-BTC'])
+
+# 하나은행 환율 정보
+# import requests
+# import json
+
+# response = requests.get("https://quotation-api-cdn.dunamu.com/v1/forex/recent?codes=FRX.KRWUSD")
+# response_json = response.json() # [{ }] -> 리스트 안에 딕셔너리 형태
+# print(response_json) # 리스트
+# print(response_json[0]) # 인덱스가 0 한개뿐이므로 리스트 안에있는 딕셔너리가 모두 출력
+# print(response_json[0]['basePrice'])
