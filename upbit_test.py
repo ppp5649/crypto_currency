@@ -1,4 +1,4 @@
-# views에 넣기 전 테스트 페이지
+# views에 넣기 전 테스트 페이지(시행착오들이 모두 담겨있음)
 
 # 실시간 원화거래 코인 시세 불러오기 (websocket)
 # import websockets
@@ -169,3 +169,100 @@
 # print(response_json) # 리스트
 # print(response_json[0]) # 인덱스가 0 한개뿐이므로 리스트 안에있는 딕셔너리가 모두 출력
 # print(response_json[0]['basePrice'])
+
+# import requests
+
+# def bithumb_price(url): 
+#     response = requests.get(url)
+#     response_json = response.json()
+#     data = response_json['data']
+#     prices = {}
+
+#     for coin in data:
+#         print(coin)
+
+#     return prices
+
+# 빗썸 시세 가져오기
+# bithumb_price = bithumb_price("https://api.bithumb.com/public/ticker/all_krw")
+# print(bithumb_price)
+
+# import requests
+
+# def get_bithumb_price(url): 
+#     response = requests.get(url)
+#     response_json = response.json()
+#     bithumb_price = {}
+
+#     data = response_json['data']
+#     for coin in data.keys():
+#         if coin == 'date': # date(날짜코드) 제외
+#             continue
+#         values = data[coin]
+#         bithumb_price.update({coin: values['closing_price']})
+#     return bithumb_price
+
+# 코인원 시세 가져오기
+# import requests
+
+# response = requests.get("https://api.coinone.co.kr/ticker?currency=all")
+# response_json = response.json()
+# coinone_price = {}
+
+# # 기본적으로 dictionary를 for문 돌리면 key값이 나옴
+# # key값과 value값을 모두 이용하고 싶다면 
+# # for key, value in dictionary.items() :
+# #    print(key, value)
+# for ticker,price_detail in response_json.items():
+#     # 불필요한 key들 제외
+#     if 'result' in ticker or 'errorCode' in ticker or 'timestamp' in ticker:
+#         continue
+#     last_price = price_detail['last']
+#     coinone_price.update({ticker : last_price})
+
+# print(coinone_price)
+
+# 코빗 시세 가져오기
+# import requests
+
+# response = requests.get("https://api.korbit.co.kr/v1/ticker/detailed/all")
+# response_json = response.json()
+# korbit_price = {}
+# korbit_changed_rate = {}
+# korbit_trade_volume = {}
+
+# for ticker,price_detail in response_json.items():
+#     last_price = float(price_detail['last'])
+#     changed_rate = price_detail['changePercent']
+#     trade_volume = float(price_detail['volume'])
+#     trade_volume_total = round((trade_volume*last_price)/100000000, 2)
+
+#     korbit_price.update({ticker : last_price})
+#     korbit_changed_rate.update({ticker : changed_rate})
+#     korbit_trade_volume.update({ticker : trade_volume_total})
+
+# print(korbit_trade_volume)
+
+# 빗썸 시세 가져오기(통일감 있게 수정) - 딕셔너리 value 값 이용 방법 변경
+# import requests
+
+# response = requests.get("https://api.bithumb.com/public/ticker/all_krw")
+# response_json = response.json()
+# bithumb_price = {} # 빗썸 현재가 (전일 종가는 초기화 00시)
+# bithumb_changed_rate = {} # 빗썸 최근 24시간 변동률 
+# bithumb_trade_volume = {} # 빗썸 최근 24시간 거래량 (원화)
+# data_dict = response_json['data']
+
+# for ticker, price_detail in data_dict.items(): # data_dict 딕셔너리 
+#     if ticker == 'date': # date(타임 스탬프) 제외
+#         continue
+#     closing_price = price_detail['closing_price']
+#     fluctate_rate_24H = price_detail['fluctate_rate_24H']
+#     acc_trade_value_24H = round(float(price_detail['acc_trade_value_24H'])/100000000)
+#     # str -> float -> round로 깎고 억 단위로 나누기
+    
+#     bithumb_price.update({ticker : closing_price})
+#     bithumb_changed_rate.update({ticker : fluctate_rate_24H})
+#     bithumb_trade_volume.update({ticker : acc_trade_value_24H })
+
+# print(bithumb_trade_volume)
