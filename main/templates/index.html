@@ -14,49 +14,49 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>메인 페이지</title>
-    <script>
-      
-    </script>
+    <!-- 검색기능 때문에 th에서 td로 교체하면서 style 추가(bold) -->
+    <style>
+      td{
+        border-color: inherit;
+        border-style: solid;
+        border-width: 0;
+      }
+      .td-bold {
+        font-weight: bold;
+      }
+      /* 오른쪽 정렬 */
+      #li-right{
+        margin-left:auto;
+      }
+    </style>
 </head>
-
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="#">Coin Price Chart</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-      
-          <div class="collapse navbar-collapse" id="navbarColor01">
-            <ul class="navbar-nav me-auto">
-              <li class="nav-item">
-                <a class="nav-link active" href="#">Home
-                  <span class="visually-hidden">(current)</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Pricing</a>
-              </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-                <div class="dropdown-menu">
-                  <a class="dropdown-item" href="#">Action</a>
-                  <a class="dropdown-item" href="#">Another action</a>
-                  <a class="dropdown-item" href="#">Something else here</a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="#">Separated link</a>
-                </div>
-              </li>
-            </ul>
-            <form class="d-flex">
-              <input class="form-control me-sm-2" type="text" placeholder="Search">
-              <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-            </form>
-          </div>
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Coin Price Chart</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarColor01">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <a class="nav-link active" href="#">Home
+                <span class="visually-hidden">(current)</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Pricing</a>
+            </li>
+          </ul>
+          <form class="d-flex">
+            <input class="form-control me-sm-2" type="text" placeholder="Enter English name" id="myInput" onkeyup="tableSearch()">
+          </form>
         </div>
-      </nav>
-      <br>
-      <br>
+      </div>
+    </nav>
+    <br>
+    <!-- col-숫자로 column 길이 조정 가능 -->
+    <div class = "col-9">
       <ul class="nav nav-tabs">
         <!-- active tag -->
         <li class="nav-item">
@@ -71,15 +71,19 @@
         <li class="nav-item">
           <a class="nav-link" data-bs-toggle="tab" href="#korbit">Korbit</a>
         </li>
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+        <li class="nav-item">
+          <button onClick="window.location.reload()" class="btn btn-outline-success">Page Reloading</button>
+        </li>
       </ul>
       <br>
       <div id="myTabContent" class="tab-content">
         <!-- 두번째 div 부터 class를 tab-pane fade로 바꾸고 나서부터 탭이 정상적으로 먹힘 -->
         <div class="tab-pane fade active show" id="upbit">
-          <table class="table table-hover">
+          <table class="table table-hover" id ="myTable" data-filter-control="true" data-show-search-clear-button="true">
             <thead>
               <tr>
-                <th scope="col">원화거래 코인 (영문)</th>
+                <th scope="col">코인 (Ticker)</th>
                 <th scope="col">실시간 시세 (KRW)</th>
                 <th scope="col">전일 대비 변동률 (%)</th>
                 <th scope="col">24시간 내 거래량 (억)</th>
@@ -92,7 +96,7 @@
               <tr>
                 <!-- key를 통해 Dict 접근 getvalue 딕셔너리이름 키이름 -->
                 <!-- Django 내장 filter cut -->
-                <th scope="row">{% getvalue upbit_ticker_dict upbit_key %} ({{upbit_key|cut:"KRW-"}})</th>
+                <td class="td-bold">{% getvalue upbit_ticker_dict upbit_key %} ({{upbit_key|cut:"KRW-"}})</td>
                 <td>{{upbit_value}}</td>
                 <td>{% getvalue upbit_changed_rate upbit_key %}</td>
                 <td>{% getvalue upbit_trade_volume upbit_key %}</td>
@@ -102,10 +106,10 @@
           </table>
         </div>
         <div class="tab-pane fade" id="bithumb">
-          <table class="table table-hover">
+          <table class="table table-hover" id ="myTable" data-filter-control="true" data-show-search-clear-button="true">
             <thead>
               <tr>
-                <th scope="col">원화거래 코인 (영문)</th>
+                <th scope="col">코인 (Ticker)</th>
                 <th scope="col">실시간 시세 (KRW)</th>
                 <th scope="col">전일 대비 변동률 (%)</th>
                 <th scope="col">24시간 내 거래량 (억)</th>
@@ -114,7 +118,7 @@
             <tbody>
               {% for bithumb_key,bithumb_value in bithumb_price.items %}
               <tr>
-                <th scope="row">{{bithumb_key}}</th>
+                <td class="td-bold">{{bithumb_key}}</td>
                 <td>{{bithumb_value}}</td>
                 <td>{% getvalue bithumb_changed_rate bithumb_key %}</td>
                 <td>{% getvalue bithumb_trade_volume bithumb_key %}</td>
@@ -124,10 +128,10 @@
           </table>
         </div>
         <div class="tab-pane fade" id="coinone">
-          <table class="table table-hover">
+          <table class="table table-hover" id ="myTable" data-filter-control="true" data-show-search-clear-button="true">
             <thead>
               <tr>
-                <th scope="col">원화거래 코인 (영문)</th>
+                <th scope="col">코인 (Ticker)</th>
                 <th scope="col">실시간 시세 (KRW)</th>
                 <th scope="col">전일 대비 변동률 (%)</th>
                 <th scope="col">24시간 내 거래량 (억)</th>
@@ -137,7 +141,8 @@
               {% for coinone_key,coinone_value in coinone_price.items %}
               <tr>
                 <!-- upper 필터 : 문자열을 대문자로 -->
-                <th scope="row">{{coinone_key|upper}}</th>
+                <!-- 검색때문에 th 태그에서 td 태그로 바꾸고 bold class로 진하게 -->
+                <td class="td-bold">{{coinone_key|upper}}</td>
                 <td>{{coinone_value}}</td>
                 <td>{% getvalue coinone_changed_rate coinone_key %}</td>
                 <td>{% getvalue coinone_trade_volume coinone_key %}</td>
@@ -147,10 +152,10 @@
           </table>
         </div>
         <div class="tab-pane fade" id="korbit">
-          <table class="table table-hover">
+          <table class="table table-hover" id ="myTable" data-filter-control="true" data-show-search-clear-button="true">
             <thead>
               <tr>
-                <th scope="col">원화거래 코인 (영문)</th>
+                <th scope="col">코인 (Ticker)</th>
                 <th scope="col">실시간 시세 (KRW)</th>
                 <th scope="col">전일 대비 변동률 (%)</th>
                 <th scope="col">24시간 내 거래량 (억)</th>
@@ -159,7 +164,8 @@
             <tbody>
               {% for korbit_key,korbit_value in korbit_price.items %}
               <tr>
-                <th scope="row">{{korbit_key|cut:"_krw"|upper}}</th>
+                <!-- 끝에 _krw 지우고 대문자로 -->
+                <td class="td-bold">{{korbit_key|cut:"_krw"|upper}}</td>
                 <td>{{korbit_value}}</td>
                 <td>{% getvalue korbit_changed_rate korbit_key %}</td>
                 <td>{% getvalue korbit_trade_volume korbit_key %}</td>
@@ -168,7 +174,31 @@
             </tbody>
           </table>
         </div>    
-      </div> 
+      </div>
+    </div> 
+      <script type="application/javascript">
+        function tableSearch() {
+            let input, filter, div, tr, td, txtValue;
+
+            //Intialising Variables
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            div = document.getElementById("myTabContent");
+            tr = div.getElementsByTagName("tr");
+
+            for (let i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[0];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+      </script>
       <!-- Bootstrap JS --> <!-- 이거 안넣어서 Tab이 안먹혔었음 -->
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
   </body>

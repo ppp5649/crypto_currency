@@ -11,7 +11,8 @@ def usd_to_krw(url):
     
     return usd_price
 
-# 원화거래 코인이름만 가져오는 함수
+
+# {ticker : 한글이름} 형태의 딕셔너리 생성 함수
 def get_upbit_ticker(url):
     response = requests.get(url)
     response_json = response.json() # [ {},{},{} ... ] 리스트 1개 안에 딕셔너리 ticker 개수만큼
@@ -26,10 +27,11 @@ def get_upbit_ticker(url):
 
     return upbit_ticker_dict
 
-# {"ticker" : 현재가} 형태의 dictionary 호출 함수 (업비트)
+# 4대 거래소 시세 가져오는 함수
 def get_upbit_price(url): 
     response = requests.get(url)
     response_json = response.json()
+    
     # key값으로 조회도 가능하고, 템플릿 변수로 사용하기 편한 dictionary로 통일
     upbit_price = {} # 업비트 현재가 (전일 종가는 초기화 09시, UTC 기준 00시)
     upbit_changed_rate = {} # 업비트 변동률(기준 안나와있음) -> 수정 필요 빗썸과 기준 다름
@@ -43,7 +45,8 @@ def get_upbit_price(url):
         ticker = response_json[i]['market']
         acc_trade_price_24h = response_json[i]['acc_trade_price_24h']
 
-        upbit_price.update({ticker : format(trade_price, ',')}) # 현재가 3자리마다 , 추가
+        upbit_price.update({ticker : format(trade_price, ',')}) 
+        # 현재가 3자리마다 , 추가 (단 자료형이 숫자형일 경우만 가능 str X)
         upbit_changed_rate.update({ticker : round(changed_rate, 2)})
         upbit_trade_volume.update({ticker : round(acc_trade_price_24h/100000000)})
         # float -> round로 깎고 억 단위로 나누기
@@ -54,6 +57,7 @@ def get_upbit_price(url):
 def get_bithumb_price(url): 
     response = requests.get(url)
     response_json = response.json()
+    
     bithumb_price = {} # 빗썸 현재가 (전일 종가는 초기화 00시)
     bithumb_changed_rate = {} # 빗썸 최근 24시간 변동률 
     bithumb_trade_volume = {} # 빗썸 최근 24시간 거래량 (원화)
@@ -67,7 +71,7 @@ def get_bithumb_price(url):
         acc_trade_value_24H = round(float(price_detail['acc_trade_value_24H'])/100000000)
         # str -> float -> round로 깎고 억 단위로 나누기
         
-        bithumb_price.update({ticker : closing_price})
+        bithumb_price.update({ticker : format(float(closing_price), ',')})
         bithumb_changed_rate.update({ticker : fluctate_rate_24H})
         bithumb_trade_volume.update({ticker : acc_trade_value_24H })
 
@@ -77,6 +81,7 @@ def get_bithumb_price(url):
 def get_coinone_price(url):
     response = requests.get(url)
     response_json = response.json()
+    
     coinone_price = {}
     coinone_changed_rate = {}
     coinone_trade_volume = {}
@@ -94,15 +99,17 @@ def get_coinone_price(url):
         yesterday_volume = float(price_detail['yesterday_volume'])
         yesterday_volume_total = round((last_price*yesterday_volume)/100000000, 3)
         
-        coinone_price.update({ticker : last_price})
+        coinone_price.update({ticker : format(last_price, ',')})
         coinone_changed_rate.update({ticker : changed_rate})
         coinone_trade_volume.update({ticker : yesterday_volume_total})
 
     return coinone_price, coinone_changed_rate, coinone_trade_volume
 
+
 def get_korbit_price(url):
     response = requests.get(url)
     response_json = response.json()
+    
     korbit_price = {}
     korbit_changed_rate = {}
     korbit_trade_volume = {}
@@ -113,7 +120,7 @@ def get_korbit_price(url):
         trade_volume = float(price_detail['volume'])
         trade_volume_total = round((trade_volume*last_price)/100000000, 2)
 
-        korbit_price.update({ticker : last_price})
+        korbit_price.update({ticker : format(last_price, ',')})
         korbit_changed_rate.update({ticker : changed_rate})
         korbit_trade_volume.update({ticker : trade_volume_total})
 
@@ -123,15 +130,19 @@ def get_korbit_price(url):
 def index(request):
     usd_price = usd_to_krw("https://quotation-api-cdn.dunamu.com/v1/forex/recent?codes=FRX.KRWUSD")
     upbit_ticker_dict = get_upbit_ticker("https://api.upbit.com/v1/market/all") 
-    # 딕셔너리 형태로 코인이름 조회
     upbit_ticker_list = list(upbit_ticker_dict.keys()) # type을 dict_keys -> list로 변환
     upbit_ticker_str = ','.join(upbit_ticker_list) # url에 넣어주기 위해 list -> str 변환
+    
+    # 4대 거래소 시세 정보
+    upbit_price, upbit_changed_rate, upbit_trade_volume = get_upbit_price(f"https://api.upbit.com/v1/ticker?markets={upbit_ticker_str}") 
+
     bithumb_price, bithumb_changed_rate, bithumb_trade_volume = get_bithumb_price("https://api.bithumb.com/public/ticker/ALL_KRW")
-    upbit_price, upbit_changed_rate, upbit_trade_volume = get_upbit_price(f"https://api.upbit.com/v1/ticker?markets={upbit_ticker_str}") # upbit는 tikcer들을 str로 넣어줘야 함
-    # print(dict(sorted(upbit_price.items()))) 딕셔너리 key값으로 오름차순
+
     coinone_price, coinone_changed_rate, coinone_trade_volume = get_coinone_price("https://api.coinone.co.kr/ticker?currency=all")
+
     korbit_price, korbit_changed_rate, korbit_trade_volume = get_korbit_price("https://api.korbit.co.kr/v1/ticker/detailed/all")
 
+    # 템플릿 변수
     context = {'usd_price' : usd_price, 'upbit_ticker_dict':upbit_ticker_dict, 'upbit_price':upbit_price, 'upbit_changed_rate':upbit_changed_rate, 'upbit_trade_volume':upbit_trade_volume, 'bithumb_price':bithumb_price, 'bithumb_changed_rate':bithumb_changed_rate, 'bithumb_trade_volume':bithumb_trade_volume,'coinone_price':coinone_price, 'coinone_changed_rate':coinone_changed_rate, 'coinone_trade_volume':coinone_trade_volume, 'korbit_price':korbit_price, 'korbit_changed_rate':korbit_changed_rate, 'korbit_trade_volume':korbit_trade_volume}
 
     return render(request, 'index.html', context)
