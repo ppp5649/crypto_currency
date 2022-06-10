@@ -181,22 +181,32 @@ def getvalue(dict, key):
 </li>
 ```
 
-## 배포 (AWS - EC2 - 인스턴스)
-<인스턴스 사진>
-### Webserver(Nginx) - static file 선처리
+## 배포 환경 : AWS - EC2 - 인스턴스
+<img width="897" alt="aws 인스턴스" src="https://user-images.githubusercontent.com/59691376/173012087-b229a2d3-ae6e-431a-bebd-64b83d1acfa2.PNG">
 
-/etc/nginx/sites-available/django_test
-uwsgi와 django 연결
-port : 80
-ip : 13.124.195.235
 
-/etc/nginx/nginx.conf
-uwsgi.sock 연결
+### Webserver : Nginx - static file 선처리
+
+/etc/nginx/sites-available/django_test  
+uwsgi와 django 연결  
+port : 80  
+ip : 13.124.195.235  
+
+<img width="601" alt="nginx1" src="https://user-images.githubusercontent.com/59691376/173012043-34b4ca10-5bf9-4973-b48f-efc1dc21f702.png">
+
+
+/etc/nginx/nginx.conf  
+uwsgi.sock 연결  
+
+<img width="601" alt="nginx2" src="https://user-images.githubusercontent.com/59691376/173012056-e7b73127-7643-48a9-b14c-f59db1b4ac3f.png">
 
 이때 Nginx 502 Bad Gateway 에러 발생 -> Error log 확인하여 uwsgi.sock 경로 수정 후 해결 
 
 
-### wsgi(Uwsgi) - Nginx와 Django 연결
+### WSGI : uWSGI - Nginx와 Django 연결
 
 /etc/uwsgi/sites/uwsgi.ini
-가성환경, socket, wsgi 등 경로 입력
+가성환경, socket, wsgi 등 경로 입력  
+
+<img width="327" alt="uwsgi" src="https://user-images.githubusercontent.com/59691376/173012069-2753d7c2-70f0-4c87-a78c-cb6c4a4e7080.png">
+
