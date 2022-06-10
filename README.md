@@ -185,4 +185,18 @@ def getvalue(dict, key):
 <인스턴스 사진>
 ### Webserver(Nginx) - static file 선처리
 
+/etc/nginx/sites-available/django_test
+uwsgi와 django 연결
+port : 80
+ip : 13.124.195.235
+
+/etc/nginx/nginx.conf
+uwsgi.sock 연결
+
+이때 Nginx 502 Bad Gateway 에러 발생 -> Error log 확인하여 uwsgi.sock 경로 수정 후 해결 
+
+
 ### wsgi(Uwsgi) - Nginx와 Django 연결
+
+/etc/uwsgi/sites/uwsgi.ini
+가성환경, socket, wsgi 등 경로 입력
