@@ -46,10 +46,10 @@ def get_upbit_price(url):
         acc_trade_price_24h = response_json[i]['acc_trade_price_24h'] # 최근 24시간 거래량(원화)
 
         upbit_price.update({ticker : format(trade_price, ',')}) # 현재가 3자리마다 , 추가 (단 자료형이 숫자형일 경우만 가능 str X)
-        upbit_changed_rate.update({ticker : round(changed_rate, 2)})
+        upbit_changed_rate.update({ticker : round(changed_rate, 2)}) # 변동률 소수점 2자리 제한
         upbit_trade_volume.update({ticker : round(acc_trade_price_24h/100000000)}) # float -> round로 깎고 억 단위로 나누기
         
-    return upbit_price, upbit_changed_rate, upbit_trade_volume # return 값 다수
+    return upbit_price, upbit_changed_rate, upbit_trade_volume # return값 다수
  ```
 
 
@@ -75,6 +75,9 @@ def index(request):
 
 
 ## index.html - upbit table
+{% for key,value in dict %} 태그를 사용하여 딕셔너리 내부에서 tr태그 반복  
+시세, 변동률, 거래량 모두 key값이 upbit_key로 동일하고 커스텀 템플릿 태그를 이용하여 getvalue 함수 사용
+
 ```html
 <div class="tab-pane fade active show" id="upbit">
     <table class="table table-hover" id ="myTable-upbit" data-filter-control="true" data-show-search-clear-button="true">
@@ -101,4 +104,74 @@ def index(request):
       </tbody>
     </table>
 </div>
+```
+
+   
+### 커스텀 템플릿 태그 
+html 내에서 key값을 이용해 value 출력
+```python
+# <main/templatetags/custom_tag.py>
+
+from django import template
+
+@register.simple_tag
+def getvalue(dict, key):
+    return dict.get(key)   
+```
+
+## 부가 기능 - JavaScript
+### 테이블 정렬(오름차순, 내림차순)
+코인 이름, 시세, 변동률, 거래량에 따라 정렬 가능  
+<오름차순 내림차순 사진>  
+
+4개 거래소 마다 모두 다른 table에 있으므로 table id값을 가져옴
+```javascript
+<script>
+  new Tablesort(document.getElementById("myTable-upbit"));
+  new Tablesort(document.getElementById("myTable-bithumb"));
+  new Tablesort(document.getElementById("myTable-coinone"));
+  new Tablesort(document.getElementById("myTable-korbit"));
+</script>
+```
+
+
+### 코인이름으로 검색(navbar 우측)
+<검색창 사진>
+
+한글 이름이나 ticker명 (td[0]) 으로 검색 가능  
+검색창에 입력 한 텍스트가 포함되지 않았을 경우 tr 숨김 처리
+
+```javascript
+<script type="application/javascript">
+  function tableSearch() {
+      let input, filter, div, tr, td, txtValue;
+
+      //Intialising Variables
+      input = document.getElementById("myInput");
+      filter = input.value.toUpperCase();
+      div = document.getElementById("myTabContent");
+      tr = div.getElementsByTagName("tr");
+
+      for (let i = 0; i < tr.length; i++) {
+          td = tr[i].getElementsByTagName("td")[0];
+          if (td) {
+              txtValue = td.textContent || td.innerText;
+              if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                  tr[i].style.display = "";
+              } else {
+                  tr[i].style.display = "none";
+              }
+          }
+      }
+  }
+</script>
+```
+
+### 페이지 리로딩
+<페이지 리로딩 gif>
+
+```html
+<li class="nav-item">
+   <button onClick="window.location.reload()" class="btn btn-outline-success">Page Reloading</button>
+</li>
 ```
