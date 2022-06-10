@@ -122,7 +122,14 @@ def getvalue(dict, key):
 ## 부가 기능 - JavaScript
 ### 테이블 정렬(오름차순, 내림차순)
 코인 이름, 시세, 변동률, 거래량에 따라 정렬 가능  
-<오름차순 내림차순 사진>  
+
+<변동률 오름차순>
+
+<img width="714" alt="변동률 오름차순" src="https://user-images.githubusercontent.com/59691376/173004736-0058f3ec-b5a3-4188-b3be-a74f0af3b622.png">
+
+<변동률 내림차순>
+
+<img width="736" alt="변동률 내림차순" src="https://user-images.githubusercontent.com/59691376/173004742-5b3b32df-3d5d-4343-b3f0-a3ebb34ab528.png">
 
 4개 거래소 마다 모두 다른 table에 있으므로 table id값을 가져옴
 ```javascript
@@ -136,7 +143,8 @@ def getvalue(dict, key):
 
 
 ### 코인이름으로 검색(navbar 우측)
-<검색창 사진>
+
+<img width="957" alt="검색창" src="https://user-images.githubusercontent.com/59691376/173004770-29d38537-bb34-4158-873c-09c9a4748916.PNG">
 
 한글 이름이나 ticker명 (td[0]) 으로 검색 가능  
 검색창에 입력 한 텍스트가 포함되지 않았을 경우 tr 숨김 처리
@@ -168,7 +176,7 @@ def getvalue(dict, key):
 ```
 
 ### 페이지 리로딩
-<페이지 리로딩 gif>
+![페이지 리로딩](https://user-images.githubusercontent.com/59691376/173004781-a44037ed-5164-48c8-80c5-82a2f98ca6e4.gif)
 
 ```html
 <li class="nav-item">
