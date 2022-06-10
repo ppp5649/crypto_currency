@@ -1,4 +1,6 @@
 ## 4대 거래소 내 코인들의 시세정보를 Table 형태로 보여주는 웹사이트  
+### 메인페이지
+<img width="947" alt="사이트 메인페이지" src="https://user-images.githubusercontent.com/59691376/172998070-3ffc3423-2317-4086-a5dc-79dd35b690f4.PNG">
 
 
 ### 데이터 요청 방식 
@@ -14,9 +16,11 @@ Websocket과 ASGI를 이용하여 실시간으로 웹에 지속적인 데이터�
 
 
 ## 코인 시세정보 가져오는 함수의 구조 (예시 - 업비트) 
-데이터의 형태가 list 내부에 코인 1개당 1개의 딕셔너리로 구성됨 [{비트코인 시세정보}, {이오스 시세정보}, {비트코인캐시 시세정보} ...]  
-<업비트 데이터 사진>  
-그 외 나머지 거래소들은 데이터의 형태가 모두 dict이고 시세 정보를 가져오는 알고리즘이 조금씩 다름  
+### 업비트 api 이미지
+<img width="960" alt="업비트 데이터" src="https://user-images.githubusercontent.com/59691376/172998266-b2397e5f-3449-4a71-b761-9dcb2020b041.PNG">  
+데이터의 형태가 list 내부에 코인 1개당 1개의 딕셔너리로 구성됨 [{BTC 시세정보}, {EOS 시세정보}, {BCH 시세정보} ...]  
+
+그 외 나머지 거래소들은 데이터의 형태가 모두 dict이고 시세 정보를 가져오는 알고리즘이 조금씩 다름   
 업비트의 경우 for문과 list 인덱싱을 이용하여 모든 코인의 데이터를 순서대로 받아 변수에 넣어줌  
 이때 return 받는 변수들은 key값이 'ticker'로 통일된 딕셔너리 형태로 for문을 돌며 update함  
 
@@ -70,19 +74,31 @@ def index(request):
 ```
 
 
-## index.html
+## index.html - upbit table
 ```html
-<tbody>
-  <!-- key와 value를 모두 이용 -->
-  {% for upbit_key,upbit_value in upbit_price.items %}
-  <tr>
-    <!-- key를 통해 Dict 접근 getvalue 딕셔너리이름 키이름 -->
-    <!-- Django 내장 filter cut을 사용하여 ticker에 있는 "KRW-" 문자열 제외 -->
-    <td class="td-bold">{% getvalue upbit_ticker_dict upbit_key %} ({{upbit_key|cut:"KRW-"}})</td>
-    <td>{{upbit_value}}</td>
-    <td>{% getvalue upbit_changed_rate upbit_key %}</td>
-    <td>{% getvalue upbit_trade_volume upbit_key %}</td>
-  </tr>
-  {% endfor %}
-</tbody>
+<div class="tab-pane fade active show" id="upbit">
+    <table class="table table-hover" id ="myTable-upbit" data-filter-control="true" data-show-search-clear-button="true">
+      <thead>
+        <tr>
+          <th scope="col">코인 (Ticker)</th>
+          <th scope="col">실시간 시세 (KRW)</th>
+          <th scope="col">전일 대비 변동률 (%)</th>
+          <th scope="col">24시간 내 거래량 (억)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- key와 value를 모두 이용 -->
+        {% for upbit_key,upbit_value in upbit_price.items %}
+        <tr>
+          <!-- key를 통해 Dict 접근 getvalue 딕셔너리이름 키이름 -->
+          <!-- Django 내장 filter cut을 사용하여 ticker에 있는 "KRW-" 문자열 제외 -->
+          <td class="td-bold">{% getvalue upbit_ticker_dict upbit_key %} ({{upbit_key|cut:"KRW-"}})</td>
+          <td>{{upbit_value}}</td>
+          <td>{% getvalue upbit_changed_rate upbit_key %}</td>
+          <td>{% getvalue upbit_trade_volume upbit_key %}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+</div>
 ```
