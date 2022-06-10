@@ -1,30 +1,27 @@
-# crypto_currency
+# 4대 거래소 내 코인들의 시세정보를 Table 형태로 보여주는 웹사이트  
 
-## 4대 거래소에 상장되어있는 코인의 시세정보를 Table 형태로 보여주는 웹사이트
 
-+데이터 요청 방식 : 4대 거래소의 REST API을 이용하여 데이터를 요청하고 응답받은 데이터를 JSON 형태로 받아옴 (HTTP request / response 방식)
+### 데이터 요청 방식 
+4대 거래소의 REST API을 이용하여 데이터를 요청하고 응답받은 데이터를 JSON 형태로 받아옴 (HTTP request / response 방식)  
 Websocket과 ASGI를 이용하여 실시간으로 웹에 지속적인 데이터를 보내는데는 성공했지만, 내가 원하는 데이터 형태로 가공하여 보내주는데는 어려움을 겪고있어 아직 구현하지 못함
 
-+부가 기능 
-1. 테이블 정렬 (코인이름, 시세, 변동률, 거래량 - 오름차순 / 내림차순)
-2. 원하는 코인의 데이터만 보여주기 (navbar 우측 검색창)
-3. Page Reloading 버튼을 통해 가격정보를 다시 불러옴
-
-### 코인 시세정보 가져오는 함수의 구조 (예시 - 업비트) 
-데이터의 형태가 list 내부에 코인 1개당 1개의 딕셔너리로 구성됨 [{비트코인 시세정보}, {이오스 시세정보}, {비트코인캐시 시세정보} ...]
-<업비트 데이터 사진>
-그 외 나머지 거래소들은 데이터의 형태가 모두 dict이고 시세 정보를 가져오는 알고리즘이 조금씩 다름
-업비트의 경우 for문과 list 인덱싱을 이용하여 모든 코인의 데이터를 순서대로 받아 변수에 넣어줌
-이때 return 받는 변수들은 key값이 'ticker'로 통일된 딕셔너리 형태로 for문을 돌며 update함
 
 ### 거래소별 특이사항
 1. 변동률을 api에서 제공하지 않는 경우 현재 가격과 전일 종가를 이용하여 직접 계산
    이때, 가격정보를 str으로 제공하는 경우 float으로 변환하여 사용하고 float으로 제공하는 경우 그대로 사용
 2. 불필요한 데이터는 if continue 구문을 통해 key값을 제외시킴 (빗썸, 코인원)
 3. 코인원의 경우 ticker의 순서가 계속 바뀌며 table에 노출됨(api에서 랜덤 순서로 제공)
-### views.py
+
+
+## 코인 시세정보 가져오는 함수의 구조 (예시 - 업비트) 
+데이터의 형태가 list 내부에 코인 1개당 1개의 딕셔너리로 구성됨 [{비트코인 시세정보}, {이오스 시세정보}, {비트코인캐시 시세정보} ...]  
+<업비트 데이터 사진>  
+그 외 나머지 거래소들은 데이터의 형태가 모두 dict이고 시세 정보를 가져오는 알고리즘이 조금씩 다름  
+업비트의 경우 for문과 list 인덱싱을 이용하여 모든 코인의 데이터를 순서대로 받아 변수에 넣어줌  
+이때 return 받는 변수들은 key값이 'ticker'로 통일된 딕셔너리 형태로 for문을 돌며 update함  
 
 ```python
+# <main/views.py>
 
 def get_upbit_price(url): 
     response = requests.get(url)
@@ -50,11 +47,15 @@ def get_upbit_price(url):
         
     return upbit_price, upbit_changed_rate, upbit_trade_volume # return 값 다수
  ```
-### index 함수 구조
-index 함수내에서 get_upbit_price 함수를 호출하여 return 받은 변수들을 선언해줌
+
+
+## index 함수 구조
+index 함수내에서 get_upbit_price 함수를 호출하여 return 받은 변수들을 선언해줌  
 context에 파이썬 변수들을 넣고 (이때 파이썬 변수 하나하나가 딕셔너리) 템플릿 변수와 함께 넘겨줌
 
 ```python
+# <main/views.py>
+
 def index(request):
     upbit_ticker_dict = get_upbit_ticker("https://api.upbit.com/v1/market/all") # 모든 ticker를 dict로 가져옴 
     upbit_ticker_list = list(upbit_ticker_dict.keys()) # type을 dict_keys -> list로 변환
@@ -68,8 +69,8 @@ def index(request):
     return render(request, 'index.html', context)
 ```
 
-### index.html
 
+## index.html
 ```html
 <tbody>
   <!-- key와 value를 모두 이용 -->
