@@ -207,7 +207,7 @@ uwsgi.sock 연결
 
 ### WSGI : uWSGI - Nginx와 Django 연결
 
-/etc/uwsgi/sites/uwsgi.ini
+/etc/uwsgi/sites/uwsgi.ini  
 가상환경, socket, wsgi 등 경로 입력  
 
 <img width="327" alt="uwsgi" src="https://user-images.githubusercontent.com/59691376/173012069-2753d7c2-70f0-4c87-a78c-cb6c4a4e7080.png">
