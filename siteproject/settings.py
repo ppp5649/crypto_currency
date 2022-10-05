@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-jce(yf$au1rus257m!a)k9n#y%p#hvv3r_4o2er#nqjh&$k_ta
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'main',
     'requests',
     'mathfilters', # 템플릿 태그 사칙연산 filter
+    'channels'
 ]
 
 
@@ -74,6 +75,9 @@ TEMPLATES = [
 WSGI_APPLICATION = 'siteproject.wsgi.application'
 
 
+ASGI_APPLICATION = 'siteproject.asgi.application'
+
+
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
@@ -84,6 +88,16 @@ DATABASES = {
     }
 }
 
+# Channels-redis
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('127.0.0.1', 6379)]
+        }
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators

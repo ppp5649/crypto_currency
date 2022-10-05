@@ -46,9 +46,9 @@
                 <span class="visually-hidden">(current)</span>
               </a>
             </li>
-            <!-- <li class="nav-item">
+            <li class="nav-item">
               <a class="nav-link" href="{% url 'realtime' %}">Realtime Price</a>
-            </li> -->
+            </li>
           </ul>
           <form class="d-flex">
             <input class="form-control me-sm-2" type="text" placeholder="Enter English name" id="myInput" onkeyup="tableSearch()">
@@ -73,10 +73,6 @@
         <li class="nav-item">
           <a class="nav-link" data-bs-toggle="tab" href="#korbit">Korbit</a>
         </li>
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-        <li class="nav-item">
-          <button onClick="window.location.reload()" class="btn btn-outline-success">Page Reloading</button>
-        </li>
       </ul>
       <br>
       <div id="myTabContent" class="tab-content">
@@ -92,18 +88,12 @@
               </tr>
             </thead>
             <tbody>
-              <!-- 여기서 all_price는 dictionary, 이 방법 기억해두기-->
-              <!-- python for문과 다름, list가 반복이 안됨 -->
-              {% for upbit_key,upbit_value in upbit_price.items %}
               <tr>
-                <!-- key를 통해 Dict 접근 getvalue 딕셔너리이름 키이름 -->
-                <!-- Django 내장 filter cut -->
-                <td class="td-bold">{% getvalue upbit_ticker_dict upbit_key %} ({{upbit_key|cut:"KRW-"}})</td>
-                <td>{{upbit_value}}</td>
-                <td>{% getvalue upbit_changed_rate upbit_key %}</td>
-                <td>{% getvalue upbit_trade_volume upbit_key %}</td>
+                <td class="td-bold"></td>
+                <td id="app1">{{ abc }}</td>
+                <td id="app2">{{abc}}</td>
+                <td></td>
               </tr>
-              {% endfor %}
             </tbody>
           </table>
         </div>
@@ -118,14 +108,12 @@
               </tr>
             </thead>
             <tbody>
-              {% for bithumb_key,bithumb_value in bithumb_price.items %}
               <tr>
-                <td class="td-bold">{{bithumb_key}}</td>
-                <td>{{bithumb_value}}</td>
-                <td>{% getvalue bithumb_changed_rate bithumb_key %}</td>
-                <td>{% getvalue bithumb_trade_volume bithumb_key %}</td>
+                <td class="td-bold"></td>
+                <td></td>
+                <td></td>
+                <td></td>
               </tr>
-              {% endfor %}
             </tbody>
           </table>
         </div>
@@ -140,16 +128,12 @@
               </tr>
             </thead>
             <tbody>
-              {% for coinone_key,coinone_value in coinone_price.items %}
               <tr>
-                <!-- upper 필터 : 문자열을 대문자로 -->
-                <!-- 검색때문에 th 태그에서 td 태그로 바꾸고 bold class로 진하게 -->
-                <td class="td-bold">{{coinone_key|upper}}</td>
-                <td>{{coinone_value}}</td>
-                <td>{% getvalue coinone_changed_rate coinone_key %}</td>
-                <td>{% getvalue coinone_trade_volume coinone_key %}</td>
+                <td class="td-bold"></td>
+                <td></td>
+                <td></td>
+                <td></td>
               </tr>
-              {% endfor %}
             </tbody>
           </table>
         </div>
@@ -164,15 +148,12 @@
               </tr>
             </thead>
             <tbody>
-              {% for korbit_key,korbit_value in korbit_price.items %}
               <tr>
-                <!-- 끝에 _krw 지우고 대문자로 -->
-                <td class="td-bold">{{korbit_key|cut:"_krw"|upper}}</td>
-                <td>{{korbit_value}}</td>
-                <td>{% getvalue korbit_changed_rate korbit_key %}</td>
-                <td>{% getvalue korbit_trade_volume korbit_key %}</td>
+                <td class="td-bold"></td>
+                <td></td>
+                <td></td>
+                <td></td>
               </tr>
-              {% endfor %}
             </tbody>
           </table>
         </div>    
@@ -185,15 +166,13 @@
       <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/17119/tablesort.min.js"></script>
       <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/17119/tablesort.number.min.js"></script>
 
-      <!-- Tablesort -->
+      <!-- JavaScript -->
       <script>
         new Tablesort(document.getElementById("myTable-upbit"));
         new Tablesort(document.getElementById("myTable-bithumb"));
         new Tablesort(document.getElementById("myTable-coinone"));
         new Tablesort(document.getElementById("myTable-korbit"));
       </script>
-
-      <!-- Table Search by ticker -->
       <script type="application/javascript">
         function tableSearch() {
             let input, filter, div, tr, td, txtValue;
@@ -217,5 +196,6 @@
             }
         }
       </script>
+      <script src="{% static 'main.js' %}"></script>
   </body>
 </html>

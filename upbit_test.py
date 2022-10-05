@@ -1,14 +1,34 @@
 # views에 넣기 전 테스트 페이지(시행착오들이 모두 담겨있음)
 
 # 실시간 원화거래 코인 시세 불러오기 (websocket)
+# import requests
 # import websockets
 # import asyncio
 # import json
 
+# url = "https://api.upbit.com/v1/market/all"
+
+# resp = requests.get(url)
+# data = resp.json()
+
+# krw_tickers = []
+
+# for coin in data:
+#     ticker = coin['market']
+
+#     if ticker.startswith("KRW"):
+#         krw_tickers.append(ticker)
+        
+# import json
+# from random import randint
+# import asyncio
+# from asyncio import sleep
+# import websockets
+
 # async def upbit_websocket():
     
 #     async with websockets.connect("wss://api.upbit.com/websocket/v1", ping_interval=None) as websocket:
-#         await websocket.send('[{"ticket":"test"},{"type":"ticker", "codes":["KRW-BTC"]}]')
+#         await websocket.send('[{"ticket":"test"},{"type":"ticker", "codes":[KRW-BTC]}]')
         
 #         # 코인 목록은 코인판 사이트에서 4대 거래소 모두 상장된 코인 기준으로 코인 이름 가져옴
 #         # Ping Message 수정 필요 (웹 소켓 끊기는 에러)
@@ -19,14 +39,50 @@
 #                 result = json.loads(result)
 #                 price = result['trade_price']
 #                 name = result['code']
-#                 print(f"코인이름 : {name}")
-#                 print(f"현재가 : {price}")
+#                 upbit_price_ws.update({name:price})
+#                 print(upbit_price_ws)
+
 #             else :
 #                 print("연결 끊김")
+
+# upbit_price_ws = {}
 
 # loop = asyncio.get_event_loop()
 # asyncio.ensure_future(upbit_websocket())
 # loop.run_forever()
+
+# import websockets
+# from asyncio import sleep
+# import asyncio 
+# import json
+ 
+# async def upbit_ws_client():
+#         uri = "wss://api.upbit.com/websocket/v1"
+#         async with websockets.connect(uri,  ping_interval=60) as websocket:
+#             subscribe_fmt = [ 
+#                 {"ticket":"test"},
+#                 {
+#                     "type": "ticker",
+#                     "codes":["KRW-BTC"],
+#                     "isOnlyRealtime": True
+#                 },
+#                 {"format":"SIMPLE"}
+#             ]
+#             subscribe_data = json.dumps(subscribe_fmt)
+#             await websocket.send(subscribe_data)
+#             await sleep(5)
+
+#             while True:
+#                 data = await websocket.recv()
+#                 data = json.loads(data)
+#                 price = data['tp']
+#                 print(price)
+            
+
+# async def main():
+#     await upbit_ws_client()
+ 
+# asyncio.run(main())
 
 # 코인 이름 가져오기
 # import requests
@@ -266,3 +322,8 @@
 #     bithumb_trade_volume.update({ticker : acc_trade_value_24H })
 
 # print(bithumb_trade_volume)
+
+# hour = -1
+# for n in range(1,25):
+#     hour += n
+#     print(hour)

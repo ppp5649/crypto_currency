@@ -164,3 +164,101 @@
 # print("Main Start")
 # asyncio.run(main())
 # print("Main End")
+
+
+# SELECT CART_ID, NAME, COUNT(NAME) AS QUANTITY
+# FROM CART_PRODUCTS
+# GROUP BY NAME
+# HAVING COUNT(NAME) > 0
+# ORDER BY CART_ID ASC, NAME ASC;
+
+# def solution(id_list, report, k):
+#     id_list = ['muzi', 'apeach','frodo','neo' ]
+#     report = []
+#     for idx in range(len(id_list)):
+#         report.append(id_list[idx])
+#     print(report)
+#     answer = []
+    
+#     return answer
+
+## 해시 - 폰켓몬 ##
+# nums = [3,3,3,2,2,4]
+# print(list(set(nums)))
+
+# print(len(set(nums)))
+
+## 해시 - 완주하지 못한 선수 ##
+## try1(정확도 20 효율성 0 실패) ##
+
+# def solution(p,c):
+#     answer = []
+#     if len(set(p)) == len(p):
+#         for i in range(len(p)):
+#             if p[i] in c:   
+#                 continue
+#             answer.append(p[i])
+    
+#         return answer[0]
+    
+#     else:
+#         for j in range(len(set(p))):
+#             p.remove(list(set(p))[j])
+        
+#         return p[0]
+
+# participant = ["kiki", "eden", "kiki"]
+# completion = ["eden", "kiki"]
+
+# print(solution(participant,completion))
+
+## 중복 예외처리 연습 ##
+# fruit_list = ['apple', 'banana', 'tomato', 'apple']
+# fruit_set_list = list(set(fruit_list))
+
+# if len(fruit_list) == len(fruit_set_list):
+#     print("중복이 없습니다.")
+
+# else:
+#     for i in range(len(fruit_set_list)): 
+#         fruit_list.remove(fruit_set_list[i])
+#     print(fruit_list)
+
+# arr = []
+# for i in range(5):
+#     arr.append(0)
+
+# print(arr)
+# print(new_arr)
+
+# name = "hj"
+# print(f"제 이름은 {name} 입니다.")
+
+# name = ['박현재','신혜란','유준민']
+# for i in range(3):
+#     print(f"안녕하세요 저는 {name[i]} 입니다.")
+
+# 리스트 컴프리헨션
+# game = ["짝" if (i+1)%3==0 else i+1 for i in range(10)]
+# print(game)
+
+# str = 'macluarin'
+# mac_list = [str[i] for i in range(9)]
+# print(mac_list)
+
+# print([c for c in str])
+
+# 딕셔너리 컴프리헨션 
+# arr1 = [1,2,3,4,5]
+# arr2 = ['a','b','c','d','e']
+
+# new_dict = { obj[0]:obj[1] for obj in zip(arr1,arr2) }
+# new_dict_indexing = {arr1[i]:arr2[i] for i in range(5)}
+
+# f-string
+
+# name = '현재'
+
+# introduce = f'안녕하세요 {name} 입니다.'
+# print(introduce)
+
